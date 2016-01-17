@@ -12,21 +12,21 @@ import java.util.Date;
 import java.util.Locale;
 
 
-public class UtilsProj {
+public class ProjectUtils {
 
     private static final String DATE_PATTERN = "EE MMM dd HH:mm:ss z yyyy";
-    private static UtilsProj instance = null;
+    private static ProjectUtils instance = null;
     private static Context context;
 
-    public static UtilsProj getInstance(Context ctx) {
+    public static ProjectUtils getInstance(Context ctx) {
         if (instance == null) {
-            instance = new UtilsProj();
+            instance = new ProjectUtils();
             context = ctx;
         }
         return instance;
     }
 
-    private UtilsProj() {
+    private ProjectUtils() {
     }
 
     public static Date convertDate(String date) {
@@ -60,6 +60,11 @@ public class UtilsProj {
         }
 
         return null;
+    }
+
+    public static Date getCurrentDate() {
+        Date current = new Date();
+        return current;
     }
 
     public static boolean getNetworkState() {

@@ -5,7 +5,7 @@ import android.animation.ValueAnimator;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class AnimatingUtils {
+public class AnimateUtils {
 
     public static boolean animProgress = false;
 
