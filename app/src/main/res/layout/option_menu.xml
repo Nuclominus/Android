@@ -4,4 +4,32 @@
     android:layout_height="match_parent">
 
 
+    <RelativeLayout
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/round_shape"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp">
+
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:id="@+id/imageView"
+            android:layout_marginTop="17dp"
+            android:src="@mipmap/ic_create_post"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="create tweet"
+            android:id="@+id/tVButtonMenu"
+            android:textColor="#ffffff"
+            android:layout_below="@+id/imageView"
+            android:layout_centerHorizontal="true"
+            android:textSize="9dp" />
+    </RelativeLayout>
+
 </LinearLayout>
