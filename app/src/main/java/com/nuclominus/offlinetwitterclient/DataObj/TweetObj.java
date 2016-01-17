@@ -5,7 +5,7 @@ import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import com.nuclominus.offlinetwitterclient.Utils.BaseFactory;
-import com.nuclominus.offlinetwitterclient.Utils.UtilsProj;
+import com.nuclominus.offlinetwitterclient.Utils.ProjectUtils;
 import com.twitter.sdk.android.core.models.Tweet;
 
 import java.sql.SQLException;
@@ -44,7 +44,7 @@ public class TweetObj {
     }
 
     public TweetObj(String createdAt, long id, String text, String user, String screen_name, String img, boolean isSent) {
-        this.createdAt = UtilsProj.convertDate(createdAt);
+        this.createdAt = ProjectUtils.convertDate(createdAt);
         this.id = id;
         this.text = text;
         this.user = user;
@@ -52,6 +52,14 @@ public class TweetObj {
         this.img = img;
         this.isSent = isSent;
         updateDiff();
+    }
+
+    public TweetObj(Date createdAt, String text, String user, String screen_name) {
+        this.createdAt = createdAt;
+        this.text = text;
+        this.user = user;
+        this.screen_name = screen_name;
+        this.isSent = false;
     }
 
     public Date getCreatedAt() {
@@ -90,8 +98,8 @@ public class TweetObj {
         this.isSent = isSent;
     }
 
-    public void updateDiff(){
-        this.diffTime = UtilsProj.getDiffDate(getCreatedAt());
+    public void updateDiff() {
+        this.diffTime = ProjectUtils.getDiffDate(getCreatedAt());
     }
 
     static public void parseTweets(List<Tweet> items) {
@@ -101,20 +109,22 @@ public class TweetObj {
                     obj.user.screenName, obj.user.profileImageUrl, true);
             tweets.add(tweet);
         }
-
         saveTweets(tweets);
+    }
 
+    static public void saveTweet(TweetObj tweet) {
+        try {
+            if (BaseFactory.getHelper().getTweetObjDAO().checkExist(tweet.getId())) {
+                BaseFactory.getHelper().createTweetObjDAO(tweet);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     static public void saveTweets(ArrayList<TweetObj> tweets) {
         for (TweetObj tweet : tweets) {
-            try {
-                if(BaseFactory.getHelper().getTweetObjDAO().checkExist(tweet.getId())) {
-                    BaseFactory.getHelper().createTweetObjDAO(tweet);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            saveTweet(tweet);
         }
     }
 

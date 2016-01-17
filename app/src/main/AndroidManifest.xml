@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".Utils.TweetApplication"
@@ -29,7 +30,7 @@
 
         <activity
             android:name=".Activity.ListPostActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <receiver
             android:name=".Receiver.InternetReceiver"
@@ -39,6 +40,14 @@
             </intent-filter>
         </receiver>
 
+        <activity
+            android:name=".Activity.CreateTweetActivity"
+            android:label="@string/title_activity_create_tweet"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            ></activity>
+
+        <service android:name=".Service.UpdateService"/>
     </application>
 
 </manifest>

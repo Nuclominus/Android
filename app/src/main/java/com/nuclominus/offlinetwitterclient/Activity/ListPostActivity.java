@@ -14,13 +14,13 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.nuclominus.offlinetwitterclient.Adapter.TweetAdapter;
+import com.nuclominus.offlinetwitterclient.DataObj.TweetObj;
+import com.nuclominus.offlinetwitterclient.Events.OnlineEvent;
 import com.nuclominus.offlinetwitterclient.Events.UpdateEvent;
+import com.nuclominus.offlinetwitterclient.R;
 import com.nuclominus.offlinetwitterclient.Service.UpdateService;
 import com.nuclominus.offlinetwitterclient.Utils.AnimateUtils;
 import com.nuclominus.offlinetwitterclient.Utils.BaseFactory;
-import com.nuclominus.offlinetwitterclient.DataObj.TweetObj;
-import com.nuclominus.offlinetwitterclient.Events.OnlineEvent;
-import com.nuclominus.offlinetwitterclient.R;
 import com.nuclominus.offlinetwitterclient.Utils.ProjectUtils;
 import com.nuclominus.offlinetwitterclient.Utils.TwitterHelper;
 import com.twitter.sdk.android.core.Callback;
@@ -46,6 +46,8 @@ public class ListPostActivity extends AppCompatActivity implements SwipeRefreshL
 
     private EventBus eventBus = EventBus.getDefault();
     private boolean network_state;
+
+    private boolean pauseState = false;
 
     RelativeLayout menuLayout, hideLayer, createTweetBtn;
 
@@ -98,8 +100,17 @@ public class ListPostActivity extends AppCompatActivity implements SwipeRefreshL
     @Override
     protected void onResume() {
         super.onResume();
-        AnimateUtils.collapse(menuLayout, hideLayer);
-        getTweets(TweetObj.getTweetObjLastID());
+        if (pauseState) {
+            AnimateUtils.collapse(menuLayout, hideLayer);
+            getTweets(TweetObj.getTweetObjLastID());
+            pauseState = false;
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        pauseState = true;
     }
 
     @Override
@@ -126,7 +137,7 @@ public class ListPostActivity extends AppCompatActivity implements SwipeRefreshL
         network_state = ProjectUtils.getNetworkState();
     }
 
-    private void update(){
+    private void update() {
         swipeLayout.setRefreshing(true);
         checkNotSend();
         getTweets(TweetObj.getTweetObjLastID());
@@ -134,13 +145,13 @@ public class ListPostActivity extends AppCompatActivity implements SwipeRefreshL
 
     public void onEvent(OnlineEvent event) {
         network_state = event.getState();
-        if (network_state){
+        if (network_state) {
             update();
         }
     }
 
-    public void onEvent(UpdateEvent event){
-        if (network_state){
+    public void onEvent(UpdateEvent event) {
+        if (network_state) {
             update();
         }
     }
@@ -178,13 +189,13 @@ public class ListPostActivity extends AppCompatActivity implements SwipeRefreshL
         }
     }
 
-    private void checkNotSend(){
+    private void checkNotSend() {
         try {
             List<TweetObj> tweetObjs = BaseFactory.getHelper().getTweetObjDAO().getAllNotSend();
-            if(tweetObjs!=null && tweetObjs.size()>0){
+            if (tweetObjs != null && tweetObjs.size() > 0) {
                 final ArrayList<Tweet> sendTweets = new ArrayList<>();
 
-                for(final TweetObj tweet : tweetObjs) {
+                for (final TweetObj tweet : tweetObjs) {
                     TwitterHelper.sendPost(new Callback<Tweet>() {
                         @Override
                         public void success(Result<Tweet> result) {
@@ -196,9 +207,10 @@ public class ListPostActivity extends AppCompatActivity implements SwipeRefreshL
                             }
 
                         }
+
                         @Override
                         public void failure(TwitterException e) {
-                            TwitterHelper.showSnack(swipeLayout,e.getLocalizedMessage());
+                            TwitterHelper.showSnack(swipeLayout, e.getLocalizedMessage());
                         }
                     }, tweet.getText());
                 }

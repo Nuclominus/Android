@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.nuclominus.offlinetwitterclient.DataObj.TweetObj;
 import com.nuclominus.offlinetwitterclient.R;
+import com.nuclominus.offlinetwitterclient.Utils.ImageUtils;
+import com.nuclominus.offlinetwitterclient.Utils.ProjectUtils;
 
 import java.util.List;
 
@@ -37,11 +39,15 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         TweetObj item = items.get(i);
         item.updateDiff();
 
-        Glide.with(context)
-                .load(item.getImg())
-                .placeholder(R.mipmap.ic_tweet)
-                .crossFade()
-                .into(viewHolder.avatar);
+        if (!item.isSent()){
+            viewHolder.avatar.setImageBitmap(ImageUtils.getImageProf());
+        } else {
+            Glide.with(context)
+                    .load(item.getImg())
+                    .placeholder(R.mipmap.ic_tweet)
+                    .crossFade()
+                    .into(viewHolder.avatar);
+        }
 
         viewHolder.tVTitle.setText(item.getUser());
         viewHolder.tVTag.setText("@" + item.getScreen_name());

@@ -3,4 +3,9 @@
     <string name="hour">\t h</string>
     <string name="minute">\t min</string>
     <string name="second">\t sec</string>
+
+    <string name="title_activity_create_tweet" translatable="false">CreateTweetActivity</string>
+    <string name="activity_button_transition" translatable="false">activity_button_transition</string>
+    <string name="msg_hint">What\'s happening?</string>
+    <string name="out_max_lenght">Exceeded the message length</string>
 </resources>

@@ -1,6 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tVCountChr"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:showIn="@layout/activity_create_tweet">
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/space"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="#cdcdcd"
+        android:orientation="horizontal" />
+
+    <RelativeLayout
+        android:id="@+id/rlOptButtonCreate"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/space"
+        android:layout_marginEnd="23dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/round_shape">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/ic_create_post" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tVChrCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/rlOptButtonCreate"
+        android:layout_alignTop="@+id/rlOptButtonCreate"
+        android:layout_marginEnd="33dp"
+        android:layout_toStartOf="@+id/rlOptButtonCreate"
+        android:gravity="center_vertical"
+        android:text="140"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#c5c5c5" />
+
+</RelativeLayout>
