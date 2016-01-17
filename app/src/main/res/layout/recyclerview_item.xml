@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animationCache="true"
+    android:overScrollMode="always">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:translationZ="2dp"
+        card_view:cardBackgroundColor="#ffffff"
+        card_view:cardCornerRadius="7dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2">
+
+                    <ImageView
+                        android:id="@+id/iVAvatar"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginBottom="18dp"
+                        android:layout_marginLeft="18dp"
+                        android:layout_marginStart="18dp"
+                        android:layout_marginTop="18dp" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/iVAvatar"
+                        android:layout_marginBottom="18dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="18dp"
+                        android:layout_toEndOf="@+id/iVAvatar"
+                        android:layout_marginTop="-5dp">
+
+                        <RelativeLayout
+                            android:id="@+id/relativeLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/tVTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginLeft="1dp"
+                                android:text="Title"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textStyle="bold"
+                                android:typeface="normal"
+                                android:textSize="14dp" />
+
+                            <TextView
+                                android:id="@+id/tVTag"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBottom="@+id/tVTitle"
+                                android:layout_marginLeft="4dp"
+                                android:layout_toEndOf="@+id/tVTitle"
+                                android:ellipsize="marquee"
+                                android:maxLines="1"
+                                android:singleLine="false"
+                                android:text="\@Tag"
+                                android:textAppearance="?android:attr/textAppearanceSmall"
+                                android:textSize="14dp"
+                                android:textStyle="italic" />
+
+                            <TextView
+                                android:id="@+id/tvTime"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="time"
+                                android:textAppearance="?android:attr/textAppearanceSmall"
+                                android:textSize="10dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginTop="4dp" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_below="@+id/relativeLayout"
+                            android:layout_marginTop="2dp">
+
+                            <TextView
+                                android:id="@+id/tVContent"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginLeft="2dp"
+                                android:autoLink="web"
+                                android:text="Content"
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
+                        </RelativeLayout>
+                    </RelativeLayout>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

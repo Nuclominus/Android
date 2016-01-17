@@ -3,8 +3,10 @@
     package="com.nuclominus.offlinetwitterclient">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
+        android:name=".Utils.TweetApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -23,6 +25,14 @@
             android:value="f136838d0332bee09cb24febd04c7024a4ca19a8" />
 
         <activity android:name=".Activity.ListPostActivity"></activity>
+
+        <receiver android:name=".Receiver.InternetReceiver"
+            android:label="NetworkConnection">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

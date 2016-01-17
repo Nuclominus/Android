@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/OfflineTwitterClient.iml" filepath="$PROJECT_DIR$/OfflineTwitterClient.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Twitter-offline-client.iml" filepath="$PROJECT_DIR$/Twitter-offline-client.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

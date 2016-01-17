@@ -1,64 +1,162 @@
 package com.nuclominus.offlinetwitterclient.Activity;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ListView;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
+import com.nuclominus.offlinetwitterclient.Adapter.TweetAdapter;
+import com.nuclominus.offlinetwitterclient.Utils.BaseFactory;
+import com.nuclominus.offlinetwitterclient.DataObj.TweetObj;
+import com.nuclominus.offlinetwitterclient.Events.OnlineEvent;
 import com.nuclominus.offlinetwitterclient.R;
-import com.twitter.sdk.android.Twitter;
+import com.nuclominus.offlinetwitterclient.Utils.UtilsProj;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterApiClient;
+import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Tweet;
-import com.twitter.sdk.android.tweetui.TimelineResult;
-import com.twitter.sdk.android.tweetui.TweetTimelineListAdapter;
-import com.twitter.sdk.android.tweetui.UserTimeline;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+import de.greenrobot.event.EventBus;
 
 
 public class ListPostActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     private SwipeRefreshLayout swipeLayout;
-    private TweetTimelineListAdapter adapter;
+    private TweetAdapter tweetAdapter;
+    private LinkedList<TweetObj> tweets;
+
+    private RecyclerView recyclerView;
+    private LinearLayoutManager layoutManager;
+
+    private EventBus eventBus = EventBus.getDefault();
+    private boolean network_state;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_post);
 
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
         swipeLayout.setOnRefreshListener(this);
 
-        initAdapter();
-        ((ListView) findViewById(android.R.id.list)).setAdapter(adapter);
+        initUtils();
 
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(tweetAdapter);
+
+        tweets = new LinkedList<>();
+        getTweets(TweetObj.getTweetObjLastID());
     }
 
-    private void initAdapter() {
-        final UserTimeline userTimeline = new UserTimeline.Builder()
-                .screenName(Twitter.getSessionManager().getActiveSession().getUserName())
-                .build();
-        adapter = new TweetTimelineListAdapter.Builder(this)
-                .setTimeline(userTimeline)
-                .build();
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.list_menu_items, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        eventBus.unregister(this);
+        super.onDestroy();
+    }
+
+    private void initUtils() {
+        UtilsProj.getInstance(this);
+        eventBus.register(this);
+        network_state = UtilsProj.getNetworkState();
+    }
+
+    public void onEvent(OnlineEvent event) {
+        network_state = event.getState();
+        getTweets(TweetObj.getTweetObjLastID());
+    }
+
+    public void getTweets(final Long since_id) {
+
+        if (network_state) {
+            TwitterApiClient twitterApiClient = TwitterCore.getInstance().getApiClient();
+            twitterApiClient.getStatusesService().homeTimeline(null, since_id, null, null, null, null, null, new Callback<List<Tweet>>() {
+
+                @Override
+                public void success(Result<List<Tweet>> listResult) {
+                    if (listResult.data.size() > 0) {
+                        TweetObj.parseTweets(listResult.data);
+                    }
+                    initTweets();
+                }
+
+                @Override
+                public void failure(TwitterException e) {
+                    Snackbar.make(swipeLayout, "Twitter: " + e.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
+                    swipeLayout.setRefreshing(false);
+                }
+            });
+        } else {
+            initTweets();
+        }
+    }
+
+    private void initTweets() {
+        try {
+            tweets.clear();
+            tweets.addAll(BaseFactory.getHelper().getTweetObjDAO().getAllTweets());
+            setCount();
+            initAdapter();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void initAdapter() {
+        if (tweets != null) {
+            if (tweetAdapter != null) {
+                tweetAdapter.notifyDataSetChanged();
+            } else {
+                tweetAdapter = new TweetAdapter(tweets, ListPostActivity.this);
+                recyclerView.setAdapter(tweetAdapter);
+            }
+        } else {
+            tweetAdapter = new TweetAdapter(new ArrayList<TweetObj>(), ListPostActivity.this);
+        }
+        swipeLayout.setRefreshing(false);
+    }
+
+    // Test
+    private void setCount(){
+//        actionBar.setTitle(tweets.size()+"");
     }
 
     @Override
     public void onRefresh() {
-
+        network_state = UtilsProj.getNetworkState();
         swipeLayout.setRefreshing(true);
-
-        adapter.refresh(new Callback<TimelineResult<Tweet>>() {
-            @Override
-            public void success(Result<TimelineResult<Tweet>> result) {
-                swipeLayout.setRefreshing(false);
-
-            }
-
-            @Override
-            public void failure(TwitterException exception) {
-                swipeLayout.setRefreshing(false);
-            }
-        });
+        if (tweets != null && tweets.size() > 0)
+            getTweets(tweets.get(0).getId());
     }
+
+
 }

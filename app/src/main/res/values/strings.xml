@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">OfflineTwitterClient</string>
+    <string name="hour">\t h</string>
+    <string name="minute">\t min</string>
+    <string name="second">\t sec</string>
 </resources>
