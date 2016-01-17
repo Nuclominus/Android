@@ -78,14 +78,16 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignBottom="@+id/tVTitle"
                                 android:layout_marginLeft="4dp"
-                                android:layout_toEndOf="@+id/tVTitle"
-                                android:ellipsize="marquee"
+                                android:ellipsize="end"
                                 android:maxLines="1"
                                 android:singleLine="false"
                                 android:text="\@Tag"
                                 android:textAppearance="?android:attr/textAppearanceSmall"
                                 android:textSize="14dp"
-                                android:textStyle="italic" />
+                                android:textStyle="italic"
+                                android:layout_toEndOf="@+id/tVTitle"
+                                android:layout_toStartOf="@+id/tvTime"
+                                android:layout_marginRight="4dp" />
 
                             <TextView
                                 android:id="@+id/tvTime"

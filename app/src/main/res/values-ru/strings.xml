@@ -4,4 +4,6 @@
     <string name="hour">\t ч</string>
     <string name="minute">\t мин</string>
     <string name="second">\t сек</string>
+    <string name="msg_hint">Что происходит?</string>
+    <string name="out_max_lenght">Превышена длина сообщения</string>
 </resources>

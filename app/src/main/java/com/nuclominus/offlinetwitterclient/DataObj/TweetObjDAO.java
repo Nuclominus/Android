@@ -26,11 +26,20 @@ public class TweetObjDAO extends BaseDaoImpl<TweetObj, Integer> {
         return null;
     }
 
+    public List<TweetObj> getAllNotSend() throws SQLException {
+        return this.queryBuilder().where().eq("isSent",false).query();
+    }
+
     public boolean checkExist(Long id) throws SQLException {
         Long having = this.queryBuilder().where().eq("id", id).countOf();
         if (having != null) {
             return true;
         }
         return false;
+    }
+
+    public void removeItem(Long id) throws SQLException {
+        this.deleteBuilder().where().eq("id", id);
+        this.deleteBuilder().delete();
     }
 }
