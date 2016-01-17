@@ -3,7 +3,7 @@
     package="com.nuclominus.offlinetwitterclient">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".Utils.TweetApplication"
@@ -12,7 +12,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.LoginActivity">
+
+        <activity
+            android:name=".Activity.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,12 +27,15 @@
             android:name="io.fabric.ApiKey"
             android:value="f136838d0332bee09cb24febd04c7024a4ca19a8" />
 
-        <activity android:name=".Activity.ListPostActivity"></activity>
+        <activity
+            android:name=".Activity.ListPostActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
-        <receiver android:name=".Receiver.InternetReceiver"
+        <receiver
+            android:name=".Receiver.InternetReceiver"
             android:label="NetworkConnection">
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
 

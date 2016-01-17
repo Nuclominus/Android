@@ -3,16 +3,16 @@ package com.nuclominus.offlinetwitterclient.Activity;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuInflater;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.RelativeLayout;
 
 import com.nuclominus.offlinetwitterclient.Adapter.TweetAdapter;
+import com.nuclominus.offlinetwitterclient.Utils.AnimatingUtils;
 import com.nuclominus.offlinetwitterclient.Utils.BaseFactory;
 import com.nuclominus.offlinetwitterclient.DataObj.TweetObj;
 import com.nuclominus.offlinetwitterclient.Events.OnlineEvent;
@@ -45,6 +45,8 @@ public class ListPostActivity extends AppCompatActivity implements SwipeRefreshL
     private EventBus eventBus = EventBus.getDefault();
     private boolean network_state;
 
+    RelativeLayout menuLayout, hideLayer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,14 +69,15 @@ public class ListPostActivity extends AppCompatActivity implements SwipeRefreshL
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.list_menu_items, menu);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            if (!AnimatingUtils.animProgress)
+                if (menuLayout.getMeasuredHeight() <= 10) {
+                    AnimatingUtils.expand(menuLayout, hideLayer);
+                } else {
+                    AnimatingUtils.collapse(menuLayout, hideLayer);
+                }
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -88,6 +91,15 @@ public class ListPostActivity extends AppCompatActivity implements SwipeRefreshL
         UtilsProj.getInstance(this);
         eventBus.register(this);
         network_state = UtilsProj.getNetworkState();
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationIcon(R.mipmap.ic_burger);
+
+        menuLayout = ((RelativeLayout) findViewById(R.id.layoutMenu));
+        hideLayer = ((RelativeLayout) findViewById(R.id.hideLayer));
     }
 
     public void onEvent(OnlineEvent event) {
@@ -124,7 +136,6 @@ public class ListPostActivity extends AppCompatActivity implements SwipeRefreshL
         try {
             tweets.clear();
             tweets.addAll(BaseFactory.getHelper().getTweetObjDAO().getAllTweets());
-            setCount();
             initAdapter();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -143,11 +154,6 @@ public class ListPostActivity extends AppCompatActivity implements SwipeRefreshL
             tweetAdapter = new TweetAdapter(new ArrayList<TweetObj>(), ListPostActivity.this);
         }
         swipeLayout.setRefreshing(false);
-    }
-
-    // Test
-    private void setCount(){
-//        actionBar.setTitle(tweets.size()+"");
     }
 
     @Override
