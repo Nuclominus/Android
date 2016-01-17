@@ -8,4 +8,5 @@
     <string name="activity_button_transition" translatable="false">activity_button_transition</string>
     <string name="msg_hint">What\'s happening?</string>
     <string name="out_max_lenght">Exceeded the message length</string>
+    <string name="create_tweet">create tweet</string>
 </resources>

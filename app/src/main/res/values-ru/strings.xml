@@ -6,4 +6,5 @@
     <string name="second">\t сек</string>
     <string name="msg_hint">Что происходит?</string>
     <string name="out_max_lenght">Превышена длина сообщения</string>
+    <string name="create_tweet">создать твит</string>
 </resources>

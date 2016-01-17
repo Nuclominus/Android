@@ -91,6 +91,7 @@ public class ListPostActivity extends AppCompatActivity implements SwipeRefreshL
                 ActivityOptionsCompat options = ActivityOptionsCompat.
                         makeSceneTransitionAnimation(ListPostActivity.this, createTweetBtn, getString(R.string.activity_button_transition));
                 startActivity(intent, options.toBundle());
+                pauseState = true;
             }
         });
 
@@ -151,9 +152,7 @@ public class ListPostActivity extends AppCompatActivity implements SwipeRefreshL
     }
 
     public void onEvent(UpdateEvent event) {
-        if (network_state) {
-            update();
-        }
+        update();
     }
 
     public void getTweets(final Long since_id) {
